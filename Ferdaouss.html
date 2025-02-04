@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lovebird&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lovebird', cursive;
+            text-align: center;
+            background: linear-gradient(to bottom, #ffcccc, #ff99cc);
+            padding: 5vh 5vw;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-size: 1.8rem;
+            position: relative;
+        }
+        .container {
+            position: relative;
+            max-width: 90vw;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .note {
+            display: none;
+            animation: fadeIn 1s ease-in-out;
+            font-size: 1.6rem;
+        }
+        .note img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            font-size: 1.6rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        .rose {
+            position: absolute;
+            width: 50px;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            from { transform: translateY(-100vh); }
+            to { transform: translateY(100vh); }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            button {
+                font-size: 1.4rem;
+                padding: 1rem 1.5rem;
+            }
+            .rose {
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-music" loop>
+        <source src="yours.mp3" type="audio/mp3">
+    </audio>
+    
+    <h1>For My Love ❤️</h1>
+    <div class="container">
+        <div class="valentine-question" id="valentine-question">
+            <h2>Will you be my Valentine? ❤️</h2>
+            <button onclick="startNotes()">Yes</button>
+            <button onclick="alert('No? 😢 But I still love you!')">No</button>
+        </div>
+        <div id="notes-container"></div>
+        <button id="next-btn" style="display:none;" onclick="showNextNote()">Next</button>
+    </div>
+    
+    <script>
+        const notesContent = [
+            "You are the best part of my days.", "Every time I think of you, I smile. 💕", "No distance can change how much I adore you.",
+            "You make my world brighter just by being in it.", "You are my greatest adventure.", "You are my happiness.",
+            "Your kindness makes my heart melt.", "I love everything about you.", "You are my safe place.",
+            "Being with you is my favorite thing.", "You are my dream come true.", "My love for you grows every day.",
+            "You complete my world.", "I treasure every moment with you.", "My heart beats for you.",
+            "You are my everything.", "My happiest memories are with you.", "I can’t wait for our future together.",
+            "Forever wouldn’t be enough with you.", "I love you more each day.", "You make my heart race.", "You are my sweetest dream.",
+            "Your smile lights up my soul.", "You are my favorite person.", "I never want to be without you.",
+            "You are my love story.", "You are my sunshine on a cloudy day.", "Loving you is effortless.",
+            "You make my world magical.", "I love you forever! ❤️"
+        ];
+        
+        const noteImages = notesContent.map((_, i) => `fer${i + 1}.jpg`);
+        
+        let notesContainer = document.getElementById('notes-container');
+        
+        notesContent.forEach((text, index) => {
+            let noteDiv = document.createElement('div');
+            noteDiv.className = 'note';
+            noteDiv.innerHTML = `<img src="${noteImages[index]}" alt="FER"><p>${text}</p>`;
+            notesContainer.appendChild(noteDiv);
+        });
+        
+        let currentNote = -1;
+        const notes = document.querySelectorAll('.note');
+        const nextButton = document.getElementById('next-btn');
+        const valentineQuestion = document.getElementById('valentine-question');
+        
+        function startNotes() {
+            valentineQuestion.style.display = 'none';
+            
+            let music = document.getElementById('background-music');
+            music.play().catch(error => console.log("Autoplay blocked: ", error));
+            
+            showNote(0);
+        }
+        
+        function showNote(index) {
+            if (index < notes.length) {
+                notes[index].style.display = 'block';
+                currentNote = index;
+                if (index < notes.length - 1) {
+                    nextButton.style.display = 'block';
+                } else {
+                    nextButton.style.display = 'none';
+                }
+            }
+        }
+        
+        function showNextNote() {
+            if (currentNote + 1 < notes.length) {
+                notes[currentNote].style.display = 'none';
+                showNote(currentNote + 1);
+            }
+        }
+        
+        function createRoses() {
+            setInterval(() => {
+                let rose = document.createElement('img');
+                rose.src = 'rose.png';
+                rose.className = 'rose';
+                rose.style.left = Math.random() * 100 + 'vw';
+                rose.style.animationDuration = Math.random() * 3 + 2 + 's';
+                document.body.appendChild(rose);
+                setTimeout(() => rose.remove(), 5000);
+            }, 500);
+        }
+        createRoses();
+         
+    </script>
+</body>
+</html>
